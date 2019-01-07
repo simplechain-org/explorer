@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  h3 Account info of #{account}
+  //- table.table
+  //-   tr
+  //-     td Balance:
+  //-     td #{tokenformatter.format(balance.balance)}
+  
+  .row
+    .col-md-10      
+      h3 Tokens Account
+
+  .row
+    .col-md-12
+      .table-responsive
+        table.table
+          tr
+            th Address
+            th TokenAddress
+            th Balance
+          for account in accounts
+            tr
+              td
+                a(href="/account/" + account.address) #{account.address}
+              td #{account.tokenAddress}
+
+              if account.tokenAddress == 'ETH'
+                td #{ethformatter.format(account.value)}
+              else 
+                td #{tokenformatter.format(account.value,account.config.decimals)}  #{account.config.name}
+
+  .row
+    .col-md-10      
+      h3 Recent Transactions
+    //- .col-md-1
+    //-   if offset - stepSize >= 0
+    //-     a.btn.btn-default(href="/account/" + account + "/" + (offset - stepSize)) Previous
+    //- .col-md-1
+    //-     a.btn.btn-default(href="/account/" + account + "/" + (offset + stepSize)) Next
+
+  .row
+    .col-md-12
+      .table-responsive
+        table.table
+          tr
+            th TX Hash
+            //- th Block #
+            th From
+            th To
+            th Value
+            th Gas Used
+          for transaction in transactions
+            tr
+              td
+                a(href="/transaction/" + transaction.hash) #{transaction.hash}
+              //- td
+              //-   a(href="/block/" + transaction.blockNumber) #{transaction.blockNumber}
+              td
+                a(href="/account/" + transaction.from) #{hashFormatter.format(transaction.from)}
+              
+                if transaction.eto
+                  td 
+                    a(href="/account/" + transaction.eto) #{hashFormatter.format(transaction.eto)}
+                  td #{tokenformatter.format(transaction.evalue,transaction.decimals)} #{transaction.name}
+                else
+                  td
+                    a(href="/account/" + transaction.to) #{hashFormatter.format(transaction.to)}
+                  td #{ethformatter.format(transaction.value)}
+
+              td #{gasformatter.format(transaction.gas)}
+              

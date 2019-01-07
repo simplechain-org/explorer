@@ -1,0 +1,97 @@
+extends layout
+
+block content
+
+  form
+    fieldset
+        legend  information of transaction #{transaction.hash}
+        div.form-group.row
+            label.col-sm-2.col-form-label Block Hash
+            div.col-sm-10
+                a(href="/block/" + transaction.blockHash) #{transaction.blockHash}
+        div.form-group.row
+            label.col-sm-2.col-form-label Received Time
+            div.col-sm-10 #{new Date(transaction.block.timestamp * 1000).toUTCString()}
+        div.form-group.row
+            label.col-sm-2.col-form-label Included In Block
+            div.col-sm-10
+                a(href="/block/" + transaction.blockNumber) #{transaction.blockNumber}
+        div.form-group.row
+            label.col-sm-2.col-form-label Gas Used
+            div.col-sm-10  #{gasformatter.format(transaction.gasUsed)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Gas Price
+            div.col-sm-10  #{gasprice.format(transaction.gasPrice)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Transaction Confirmations
+            div.col-sm-10 #{blockNumber === transaction.blockNumber ? 'Unconfirmed' : blockNumber - transaction.blockNumber + " Confirmations"}
+        div.form-group.row
+            label.col-sm-2.col-form-label Nonce
+            div.col-sm-10 #{transaction.nonce}
+        div.form-group.row
+            label.col-sm-2.col-form-label Status
+            div.col-sm-10 #{transaction.status}
+        div.form-group.row
+            label.col-sm-2.col-form-label Transaction price
+            div.col-sm-10 #{txprice.format(transaction.gasUsed,transaction.gasPrice)}
+        //- div.form-group.row
+        //-     label.col-sm-2.col-form-label Data
+        //-     - var attributesCy = {};
+        //-     - attributesCy.class = 'form-control';
+        //-     textarea#text&attributes(attributesCy) #{transaction.input}
+
+        div.form-group.row
+            label.col-sm-2.col-form-label#dataLabel Data
+            textarea.form-control #{transaction.input.toString()}
+            input(type='hidden' id="orgInput" value=transaction.input.toString())
+            input(type='hidden' id="utf8Input" value=new Buffer(transaction.input.toString().slice(2),'hex').toString('utf8'))
+
+            - var attributes = {};
+            - attributes.class = 'form-control';
+            select(style="width:100px")#type&attributes(attributes)
+                option(value="1") Original
+                option(value="2") UTF-8
+        if transaction.event
+            legend Event log of #{tokenConfig.name}
+            div.form-group.row
+                label.col-sm-2.col-form-label Contract Address
+                div.col-sm-10 #{transaction.event.address}
+            div.form-group.row
+                label.col-sm-2.col-form-label Event
+                div.col-sm-10 #{transaction.event.event}
+            div.form-group.row
+                label.col-sm-2.col-form-label From
+                div.col-sm-10
+                    a(href="/account/" + transaction.event.from) #{transaction.event.from}
+            div.form-group.row
+                label.col-sm-2.col-form-label To
+                div.col-sm-10
+                    a(href="/account/" + transaction.event.to) #{transaction.event.to}
+            div.form-group.row
+                label.col-sm-2.col-form-label Value
+                div.col-sm-10 #{tokenformatter.format(transaction.event.value,tokenConfig.decimals)} #{tokenConfig.name}
+        else
+            div.form-group.row
+                label.col-sm-2.col-form-label From
+                div.col-sm-10
+                    a(href="/account/" + transaction.from) #{transaction.from}
+            div.form-group.row
+                label.col-sm-2.col-form-label To
+                div.col-sm-10
+                    a(href="/account/" + transaction.to) #{transaction.to}
+            div.form-group.row
+                label.col-sm-2.col-form-label Value
+                div.col-sm-10 #{ethformatter.format(transaction.value)}
+
+    script.
+        var selectType = document.getElementById('type')
+        selectType.onchange = function () {
+            var index=selectType.selectedIndex;
+            if(index === 0){
+                $("textarea").val($("#orgInput").val());
+                $("#dataLabel").html("Data");
+            }else {
+                $("textarea").val($("#utf8Input").val());
+                $("#dataLabel").html("Data (Translated UTF-8)");
+            }
+        }

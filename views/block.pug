@@ -1,0 +1,94 @@
+extends layout
+
+block content
+  form
+    fieldset
+        legend information of block #{block.height}
+        div.form-group.row
+            label.col-sm-2.col-form-label Block Hash
+            div.col-sm-10 #{block.hash}
+        div.form-group.row
+            label.col-sm-2.col-form-label Received Time
+            div.col-sm-10 #{new Date(block.timestamp * 1000).toUTCString()}
+        div.form-group.row
+            label.col-sm-2.col-form-label Confirmations
+            div.col-sm-10  #{blockNumber == block.height ? 'Unconfirmed' : blockNumber - block.height + " Confirmations"}
+        div.form-group.row
+            label.col-sm-2.col-form-label Difficulty
+            div.col-sm-10  #{diffformatter.format(block.difficulty)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Nonce
+            div.col-sm-10 #{block.nonce}
+
+        div.form-group.row
+            label.col-sm-2.col-form-label size
+            div.col-sm-10 #{block.size} bytes
+        div.form-group.row
+            label.col-sm-2.col-form-label Miner
+            div.col-sm-10 #{block.miner}
+        div.form-group.row
+            label.col-sm-2.col-form-label Gas Limit
+            div.col-sm-10 #{gasformatter.format(block.gasLimit)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Gas Used
+            div.col-sm-10 #{gasformatter.format(block.gasUsed)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Uncle Hash
+            div.col-sm-10 #{block.sha3Uncles}
+        div.form-group.row
+            label.col-sm-2.col-form-label State Root Hash
+            div.col-sm-10 #{block.stateRoot}
+        div.form-group.row
+            label.col-sm-2.col-form-label Parent Hash
+            div.col-sm-10
+                a(href="/block/" + block.parentHash) #{block.parentHash}
+        div.form-group.row
+            label.col-sm-2.col-form-label Data
+            textarea.form-control #{block.extraData.slice(2)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Data (Translated)
+            pre.col-sm-10 #{new Buffer(block.extraData.toString().slice(2),'hex').toString('utf8')}
+        if block.height == 0
+            div.form-group.row
+                label.col-sm-2.col-form-label Data (Translated Image)
+                div(id='tImage').col-sm-10
+
+        div.form-group.row
+            label.col-sm-2.col-form-label Number of Transactions
+            div.col-sm-10 #{block.transactions.length}
+
+        if block.transactions.length > 0
+            legend Transactions - contained in current block
+            each transaction,index in block.transactions
+                div.form-group.row
+                    label.col-sm-2.col-form-label Transaction #{index+1}
+                div.form-group.row
+                    label.col-sm-2.col-form-label Hash #
+                    div.col-sm-10
+                        a(href="/transaction/" + transaction.hash) #{transaction.hash}
+                div.form-group.row
+                    label.col-sm-2.col-form-label From
+                    div.col-sm-10
+                        a(href="/account/" + transaction.from) #{transaction.from}
+                div.form-group.row
+                    label.col-sm-2.col-form-label To
+                    div.col-sm-10
+                        a(href="/account/" + transaction.to) #{transaction.to}
+                div.form-group.row
+                    label.col-sm-2.col-form-label Gas
+                    div.col-sm-10 #{gasformatter.format(transaction.gas)}
+                div.form-group.row
+                    label.col-sm-2.col-form-label input
+                    textarea.form-control #{transaction.input.slice(2)}
+                div.form-group.row
+                    label.col-sm-2.col-form-label Value
+                    div.col-sm-10 #{ethformatter.format(transaction.value)}
+    if block.height == 0
+      script.
+        $(function(){
+            var re = /(?=[^:;]*;)([^:;]+)|([^;,]+)$/g;
+            var html = $("pre").html();
+            var matches = html.match(re);
+            var img = $("<img src='data:"+matches[0]+";base64,"+matches[1]+"'/>");
+            $("#tImage").append(img);
+        })

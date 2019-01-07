@@ -1,0 +1,26 @@
+{
+  "name": "erc20-explorer",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node --max-old-space-size=4096 ./bin/www"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "async": "^2.4.0",
+    "bignumber.js": "^7.2.1",
+    "body-parser": "~1.16.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.0",
+    "express": "^4.16.4",
+    "moment": "^2.18.1",
+    "morgan": "~1.7.0",
+    "mysql2": "^1.6.1",
+    "pug": "~2.0.0-beta10",
+    "sequelize": "^4.41.2",
+    "serve-favicon": "^2.5.0",
+    "web3": "^1.0.0-beta.35",
+    "when": "^3.7.8",
+    "fresh": ">=0.5.2"
+  }
+}

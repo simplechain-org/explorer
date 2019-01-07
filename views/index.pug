@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  .row
+    .col-md-12
+      //- h2 #{config.tokenName}
+      //p Welcome to the #{config.tokenShortName} Explorer powered by XCash!
+  
+  .row
+    .col-md-12
+      h4 Recent Blocks
+  .row
+    .col-md-12
+      .table-responsive
+        table.table
+          tr
+            th Block #
+            th Block Hash
+            th Difficulty
+            th Miner
+            th Size
+            th Date
+            //- th # of TXs
+            th Gas used
+          for block in blocks
+            tr
+              td
+                a(href="/block/" + block.height) #{block.height}
+              td
+                a(href="/block/" + block.hash) #{hashFormatter.format(block.hash)}
+              td #{diffformatter.format(block.difficulty)}
+              td #{block.miner}
+              td #{sizeformatter.format(block.size)}
+              td #{moment(block.timestamp * 1000).fromNow()}
+              td #{gasformatter.format(block.gasUsed)}
+
+  .row
+    .col-md-12
+      h4 Recent Transactions      
+
+  .row
+    .col-md-12
+      .table-responsive
+        table.table
+          tr
+            th TX Hash
+            th Block #
+            th From
+            th To
+            th Gas Used
+            th Value
+          for transaction in transactions
+            tr
+              td
+                a(href="/transaction/" + transaction.hash) #{transaction.hash}
+              td
+                a(href="/block/" + transaction.blockNumber) #{transaction.blockNumber}
+              td
+                a(href="/account/" + transaction.from) #{hashFormatter.format(transaction.from)}
+              td
+                a(href="/account/" + transaction.to) #{hashFormatter.format(transaction.to)}
+              td #{gasformatter.format(transaction.gasUsed)}
+              td #{ethformatter.format(transaction.value)}
