@@ -35,7 +35,6 @@ async function listenBlock(blockNumber){
           {
             blockValue.uncleCount = n;
             if(n > 0){
-              console.log("uncleCount", result.number, n)
               for(let i=0;i<n;i++){
                 await web3.eth.getUncle(result.number,i,async (e,b)=>{
                   if (e == null){
