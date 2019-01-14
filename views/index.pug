@@ -5,7 +5,7 @@ block content
     .col-md-12
       //- h2 #{config.tokenName}
       //p Welcome to the #{config.tokenShortName} Explorer powered by XCash!
-  
+
   .row
     .col-md-12
       h4 Recent Blocks
@@ -14,8 +14,8 @@ block content
       .table-responsive
         table.table
           tr
-            th Block #
-            th Block Hash
+            th Block
+            th Uncles
             th Difficulty
             th Miner
             th Size
@@ -26,8 +26,7 @@ block content
             tr
               td
                 a(href="/block/" + block.height) #{block.height}
-              td
-                a(href="/block/" + block.hash) #{hashFormatter.format(block.hash)}
+              td #{block.uncleCount}
               td #{diffformatter.format(block.difficulty)}
               td #{block.miner}
               td #{sizeformatter.format(block.size)}
@@ -36,7 +35,7 @@ block content
 
   .row
     .col-md-12
-      h4 Recent Transactions      
+      h4 Recent Transactions
 
   .row
     .col-md-12
