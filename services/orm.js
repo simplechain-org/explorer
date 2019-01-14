@@ -74,7 +74,8 @@ let Block = db.define('blocks', {
   },
   transactionsRoot: {
     type: 'binary(66)'
-  }
+  },
+  uncles:{type:STRING(133)}
 }, {
   freezeTableName: true,
   timestamps: false

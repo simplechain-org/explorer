@@ -29,7 +29,8 @@ async function listenBlock(blockNumber){
             stateRoot:result.stateRoot,
             timestamp:result.timestamp,
             totalDifficulty:result.totalDifficulty,
-            transactionsRoot:result.transactionsRoot
+            transactionsRoot:result.transactionsRoot,
+            uncles:result.uncles.join(",")
         };
 
         await web3.eth.getBlockUncleCount(result.number,async (e,n)=>
