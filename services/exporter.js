@@ -22,6 +22,7 @@ async function listenBlock(blockNumber){
             nonce : result.nonce,
             parentHash: result.parentHash,
             receiptsRoot: result.receiptsRoot,
+            reward: result.reward,
             uncleCount:0,
             sha3Uncles: result.sha3Uncles,
             size: result.size,

@@ -51,6 +51,9 @@ let Block = db.define('blocks', {
   receiptsRoot: {
     type: 'binary(66)'
   },
+  reward: {
+    type: STRING
+  },
   uncleCount: {
     type: INTEGER
   },

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var {Block,Transaction} =  require("../services/orm");
 var web3 = require('../lib/web3');
-
+var blockReward = require('../utils/blockReward');
 router.get('/:block', function(req, res, next) {
 
   var paramter;
@@ -20,9 +20,13 @@ router.get('/:block', function(req, res, next) {
         ],
 		where:paramter
 	}).then(async (data)=>{
-
-        var blockNumber = await web3.eth.getBlockNumber();
-        res.render('block', { block: data , blockNumber: blockNumber });
+    let blockNumber = await web3.eth.getBlockNumber();
+    let reward = blockReward.getBlockReward(data)
+    res.render('block', { 
+      block: data, 
+      blockNumber,
+      reward
+    });
   });
 });
 
