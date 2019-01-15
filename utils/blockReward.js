@@ -22,11 +22,15 @@ function getUncleReward(uHeight, height) {
 
 // 获取区块所有消耗的txsFee
 function getGasInBlock(transactions) {
-    let txsFee = 0;
     let length = transactions.length
+    if (length === 0) {
+        return 0
+    } 
+    let txsFee = 0;
     for (let i = 0; i < length; i++) {
-        fee = (transactions[i].gasUsed) * (transactions[i].gasPrice);
-        fee = web3.utils.fromWei(fee.toString());
+        fee = (transactions[i].gas) * (transactions[i].gasPrice);
+        fee = isNaN(fee)? 0 : fee
+        fee = web3.utils.fromWei(String(fee));
         txsFee += parseFloat(fee);
     }
     return txsFee
