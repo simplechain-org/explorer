@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var { Uncle } = require("../services/orm");
-var blockReward = require('../utils/blockReward');
+
 router.get('/:uncle', function (req, res, next) {
 
   var paramter;
@@ -13,11 +13,9 @@ router.get('/:uncle', function (req, res, next) {
 
   return Uncle.findOne({
     where: paramter
-  }).then(async (data) => {
-    let reward = blockReward.getUncleReward(data.number, data.blockNumber)
+  }).then(async (block) => {
     res.render('uncle', {
-      block: data,
-      reward
+      block
     });
   });
 });

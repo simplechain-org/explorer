@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var { Block, Transaction, Uncle } = require("../services/orm");
+var { Block, Transaction } = require("../services/orm");
 var web3 = require('../lib/web3');
-var blockReward = require('../utils/blockReward');
-const PERCENT_OF_FOUNDATION = 0.05;
 
 router.get('/:block', function (req, res, next) {
 
@@ -21,35 +19,10 @@ router.get('/:block', function (req, res, next) {
       }
     ],
     where: paramter
-  }).then(async (data) => {
-    let blockNumber = await web3.eth.getBlockNumber();
-    if (!data.totalReward) {
-      let reward = blockReward.getConstReward(data.height)
-      let txnFees = blockReward.getGasInBlock(data.transactions)
-      let uncleReward = 0
-      for (let i = 0; i < data.uncleCount; i++) {
-        let uncle = await Uncle.findOne({
-          where: {
-            hash: data.uncles.split(',')[i]
-          }
-        })
-        uncleReward += uncle?blockReward.getUncleReward(uncle.number, uncle.blockNumber):0
-      }
-      let uncleInclusionRewards = blockReward.getRewardForUncle(data.height,data.uncleCount)
-      
-      let totalReward = reward + txnFees + uncleInclusionRewards
-      let rewardDate = {totalReward, uncleInclusionRewards, minerReward: reward*(1-PERCENT_OF_FOUNDATION), uncleReward, txnFees, foundation: reward*PERCENT_OF_FOUNDATION }
-      
-      Block.update(rewardDate, {
-        where:{
-          height : data.height
-        }
-      })
-      Object.assign(data, rewardDate)
-    }
-
+  }).then(async (block) => {
+    const blockNumber = await web3.eth.getBlockNumber();
     res.render('block', {
-      block: data,
+      block,
       blockNumber
     });
   });

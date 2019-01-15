@@ -52,25 +52,25 @@ let Block = db.define('blocks', {
     type: 'binary(66)'
   },
   totalReward: {
-    type: INTEGER
+    type: STRING(22)
   },
   uncleReward: {
-    type: INTEGER
+    type: STRING(22)
   },
   txnFees: {
-    type: INTEGER
+    type: STRING(40)
   },
   uncleInclusionRewards: {
-    type: INTEGER
+    type: STRING(22)
   },
   uncleCount: {
     type: INTEGER
   },
   minerReward: {
-    type: INTEGER
+    type: STRING(22)
   },
   foundation: {
-    type: INTEGER
+    type: STRING(22)
   }, 
   sha3Uncles: {
     type: 'binary(66)'
@@ -164,7 +164,7 @@ let Uncle = db.define('uncles', {
   timestamp: {type: INTEGER},
   totalDifficulty: {type: BIGINT},
   transactionsRoot: {type: STRING(66)},
-
+  reward: {type: STRING(22)}
 }, {
   freezeTableName: true,
   timestamps: false,
