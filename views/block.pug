@@ -44,11 +44,11 @@ block content
                 a(href="/block/" + block.parentHash) #{block.parentHash}
         div.form-group.row
             label.col-sm-2.col-form-label Block Reward
-            div.col-sm-10 #{reward}
+            div.col-sm-10 #{block.totalReward} SIPC (#{block.minerReward} + #{block.foundation} + #{block.txnFees} + #{block.uncleInclusionRewards})
         div.form-group.row
             label.col-sm-2.col-form-label Uncles Reward
             if block.uncleCount
-                div.col-sm-10 #{uncleReward} SIPC (#{block.uncleCount} #{block.uncleCount>1?'Uncles':'Uncle'})
+                div.col-sm-10 #{block.uncleReward} SIPC (#{block.uncleCount} #{block.uncleCount>1?'Uncles':'Uncle'})
             else 
                 div.col-sm-10 0
         -for (let i=0; i<block.uncleCount; i++)

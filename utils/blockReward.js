@@ -1,4 +1,3 @@
-let Config = new (require('../config.js'))();
 let web3 = require('../lib/web3');
 
 // 获取普通区块奖励。 从0开始，每250万个区块后减半。
@@ -33,20 +32,9 @@ function getGasInBlock(transactions) {
     return txsFee
 }
 
-//获取区块奖励
-function getBlockReward(block) {
-    const { height, uncleCount, transactions } = block
-    const constReward = parseFloat(getConstReward(height));
-    let uReward = 0
-    if (uncleCount > 0) {
-        uReward += getRewardForUncle(height, uncleCount);
-    }
-    TxsFee = getGasInBlock(transactions)
-    let total = constReward + TxsFee + uReward
-    return `${total} ${Config.baseToken} (${constReward * 0.95}+${constReward * 0.05}+${TxsFee}+${uReward})`;
-}
-
 module.exports = {
-    getBlockReward,
-    getUncleReward
+    getUncleReward,
+    getGasInBlock,
+    getConstReward,
+    getRewardForUncle
 }

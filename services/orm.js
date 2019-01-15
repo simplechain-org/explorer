@@ -51,12 +51,27 @@ let Block = db.define('blocks', {
   receiptsRoot: {
     type: 'binary(66)'
   },
-  reward: {
-    type: STRING
+  totalReward: {
+    type: INTEGER
+  },
+  uncleReward: {
+    type: INTEGER
+  },
+  txnFees: {
+    type: INTEGER
+  },
+  uncleInclusionRewards: {
+    type: INTEGER
   },
   uncleCount: {
     type: INTEGER
   },
+  minerReward: {
+    type: INTEGER
+  },
+  foundation: {
+    type: INTEGER
+  }, 
   sha3Uncles: {
     type: 'binary(66)'
   },
