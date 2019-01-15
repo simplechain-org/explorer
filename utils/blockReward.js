@@ -21,6 +21,7 @@ function getUncleReward(uHeight, height) {
     return reward
 }
 
+// 获取区块所有消耗的txsFee
 function getGasInBlock(transactions) {
     let txsFee = 0;
     let length = transactions.length
@@ -32,7 +33,7 @@ function getGasInBlock(transactions) {
     return txsFee
 }
 
-//获取区块奖励，TxsFee上面已经提到如何获得
+//获取区块奖励
 function getBlockReward(block) {
     const { height, uncleCount, transactions } = block
     const constReward = parseFloat(getConstReward(height));

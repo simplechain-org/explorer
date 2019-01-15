@@ -33,7 +33,7 @@ block content
             label.col-sm-2.col-form-label Gas Used
             div.col-sm-10 #{gasformatter.format(block.gasUsed)}
         div.form-group.row
-            label.col-sm-2.col-form-label Uncle Hash
+            label.col-sm-2.col-form-label Sha3Uncles
             div.col-sm-10 #{block.sha3Uncles}
         div.form-group.row
             label.col-sm-2.col-form-label State Root Hash
@@ -45,6 +45,18 @@ block content
         div.form-group.row
             label.col-sm-2.col-form-label Block Reward
             div.col-sm-10 #{reward}
+        div.form-group.row
+            label.col-sm-2.col-form-label Uncles Reward
+            if block.uncleCount
+                div.col-sm-10 #{uncleReward} SIPC (#{block.uncleCount} #{block.uncleCount>1?'Uncles':'Uncle'})
+            else 
+                div.col-sm-10 0
+        -for (let i=0; i<block.uncleCount; i++)
+            div.form-group.row
+                label.col-sm-2.col-form-label Uncle #{i}
+                a.col-sm-10(href="/uncle/" + block.uncles.split(',')[i]) #{block.uncles.split(',')[i]}
+
+
         div.form-group.row
             label.col-sm-2.col-form-label Data
             textarea.form-control #{block.extraData.slice(2)}

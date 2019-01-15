@@ -11,6 +11,7 @@ var accounts = require('./routes/accounts');
 var transaction = require('./routes/transaction');
 var search = require('./routes/search');
 var block = require('./routes/block');
+var uncle = require('./routes/uncle');
 
 var config = new(require('./config.js'))();
 
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/block', block);
+app.use('/uncle', uncle);
 app.use('/transaction', transaction);
 
 app.use('/account', account);

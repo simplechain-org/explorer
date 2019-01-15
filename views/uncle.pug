@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  form
+    fieldset
+        legend information of Uncle #{block.number}
+        div.form-group.row
+            label.col-sm-2.col-form-label Block Hash
+            div.col-sm-10 #{block.hash}
+        div.form-group.row
+            label.col-sm-2.col-form-label Received Time
+            div.col-sm-10 #{new Date(block.timestamp * 1000).toUTCString()}
+        div.form-group.row
+            label.col-sm-2.col-form-label Block Height
+            div.col-sm-10  #{block.blockNumber}
+        div.form-group.row
+            label.col-sm-2.col-form-label Difficulty
+            div.col-sm-10  #{diffformatter.format(block.difficulty.toString())}
+        div.form-group.row
+            label.col-sm-2.col-form-label Nonce
+            div.col-sm-10 #{block.nonce}
+
+        div.form-group.row
+            label.col-sm-2.col-form-label size
+            div.col-sm-10 #{block.size} bytes
+        div.form-group.row
+            label.col-sm-2.col-form-label Miner
+            div.col-sm-10 #{block.miner}
+        div.form-group.row
+            label.col-sm-2.col-form-label Gas Limit
+            div.col-sm-10 #{gasformatter.format(block.gasLimit)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Gas Used
+            div.col-sm-10 #{gasformatter.format(block.gasUsed)}
+        div.form-group.row
+            label.col-sm-2.col-form-label Sha3Uncles
+            div.col-sm-10 #{block.sha3Uncles}
+        div.form-group.row
+            label.col-sm-2.col-form-label State Root Hash
+            div.col-sm-10 #{block.stateRoot}
+        div.form-group.row
+            label.col-sm-2.col-form-label Parent Hash
+            div.col-sm-10
+                a(href="/block/" + block.parentHash) #{block.parentHash}
+        div.form-group.row
+            label.col-sm-2.col-form-label Uncle Reward
+            div.col-sm-10 #{reward} SIPC
