@@ -10,6 +10,10 @@ const PERCENT_OF_FOUNDATION = 0.05;
 async function listenBlock(blockNumber) {
   await web3.eth.getBlock(blockNumber, true, async function (error, result) {
     if (!error) {
+
+      if(result.number%10 === 0)
+        console.log("Get block ", result.number);
+
       let reward = blockReward.getConstReward(result.number)
       var blockValue = {
         height: result.number,
@@ -40,7 +44,7 @@ async function listenBlock(blockNumber) {
       await web3.eth.getBlockUncleCount(result.number, async (e, n) => {
         blockValue.uncleCount = n;
         blockValue.uncleInclusionRewards = blockReward.getRewardForUncle(result.number, n)
-        blockValue.totalReward = blockValue.uncleInclusionRewards + blockValue.txnFees + reward  
+        blockValue.totalReward = blockValue.uncleInclusionRewards + blockValue.txnFees + reward
         blockValue.uncleReward = 0
         if (n > 0) {
           for (let i = 0; i < n; i++) {
@@ -76,7 +80,7 @@ async function listenBlock(blockNumber) {
           Block.update({uncleReward: blockValue.uncleReward}, { where: { height: result.number } })
         }
       });
-     
+
       await Block.findOrCreate({
         where: {
           height: result.number
@@ -89,8 +93,6 @@ async function listenBlock(blockNumber) {
         }
 
         await result.transactions.forEach(async function (transaction) {
-          let to = transaction.to === undefined ? '' : transaction.to.toLowerCase();
-
           await Transaction.findOrCreate({
             where: {
               hash: transaction.hash.toLowerCase()
@@ -104,7 +106,7 @@ async function listenBlock(blockNumber) {
               hash: transaction.hash.toLowerCase(),
               input: transaction.input,
               nonce: transaction.nonce,
-              to: to,
+              to: transaction.to,
               transactionIndex: transaction.transactionIndex,
               value: transaction.value.toString()
             }
