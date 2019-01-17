@@ -8,7 +8,7 @@ const blockReward = require('../utils/blockReward');
 const PERCENT_OF_FOUNDATION = 0.05;
 
 async function listenBlock(blockNumber) {
-  let result = await web3.eth.getBlock(blockNumber).catch(e => {
+  let result = await web3.eth.getBlock(blockNumber, true).catch(e => {
     console.log('getBlock error:', e)
   })
 
