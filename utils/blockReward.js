@@ -13,10 +13,9 @@ function getRewardForUncle(height, uncleNumber) {
     return (reward / 32) * uncleNumber;
 }
 
-// 获取叔块奖励,uHeight为叔块高度，height为包含区块高度
-function getUncleReward(uHeight, height) {
-    let reward = getConstReward(height);
-    reward = (uHeight + 8 - height) * reward / 8;
+// 获取叔块奖励,uHeight为叔块高度，height为包含区块高度, constReward为固定奖励
+function getUncleReward(uHeight, height, constReward) {
+    let reward = (uHeight + 8 - height) * constReward / 8;
     return reward
 }
 
