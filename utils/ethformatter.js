@@ -5,7 +5,7 @@ function formatter() {
   this.format = function(txt) {
     if (isNaN(txt)) return txt;
     var w = web3.utils.fromWei(txt, "ether");
-    return Number.parseFloat(w).toFixed(6) + " " + config.baseToken;
+    return `${w} ${config.baseToken}`
   }
 }
 
