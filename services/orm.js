@@ -30,26 +30,26 @@ let Block = db.define('blocks', {
     type: INTEGER
   },
   hash: {
-    type: 'binary(66)',
+    type: 'varchar(66)',
     primaryKey: true
   },
   logsBloom: {
     type: BLOB
   },
   miner: {
-    type: 'binary(42)'
+    type: 'varchar(42)'
   },
   mixHash: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   nonce: {
-    type: 'binary(18)'
+    type: 'varchar(18)'
   },
   parentHash: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   receiptsRoot: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   totalReward: {
     type: STRING(22)
@@ -73,13 +73,13 @@ let Block = db.define('blocks', {
     type: STRING(22)
   }, 
   sha3Uncles: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   size: {
     type: INTEGER
   },
   stateRoot: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   timestamp: {
     type: INTEGER
@@ -88,7 +88,7 @@ let Block = db.define('blocks', {
     type: STRING
   },
   transactionsRoot: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   uncles:{type:STRING(133)}
 }, {
@@ -98,17 +98,17 @@ let Block = db.define('blocks', {
 
 let Transaction = db.define('transactions', {
   blockHash: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   blockNumber: {
     type: INTEGER
   },
   hash: {
-    type: 'binary(66)',
+    type: 'varchar(66)',
     primaryKey: true
   },
   from: {
-    type: 'binary(42)'
+    type: 'varchar(42)'
   },
   gas: {
     type: INTEGER
@@ -126,7 +126,7 @@ let Transaction = db.define('transactions', {
     type: INTEGER
   },
   to: {
-    type: 'binary(42)'
+    type: 'varchar(42)'
   },
   transactionIndex: {
     type: INTEGER
@@ -209,20 +209,20 @@ let TokenConfig = db.define('token_configs', {
 
 let EventLog = db.define('events', {
   address: {
-    type: 'binary(42)'
+    type: 'varchar(42)'
   },
   blockNumber: {
     type: INTEGER
   },
   transactionHash: {
-    type: 'binary(66)',
+    type: 'varchar(66)',
     primaryKey: true
   },
   transactionIndex: {
     type: INTEGER
   },
   blockHash: {
-    type: 'binary(66)'
+    type: 'varchar(66)'
   },
   logIndex: {
     type: INTEGER
@@ -237,10 +237,10 @@ let EventLog = db.define('events', {
     type: STRING(20)
   },
   from: {
-    type: 'binary(42)'
+    type: 'varchar(42)'
   },
   to: {
-    type: 'binary(42)'
+    type: 'varchar(42)'
   },
   value: {
     type: STRING
