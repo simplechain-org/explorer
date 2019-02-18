@@ -12,7 +12,7 @@ var transaction = require('./routes/transaction');
 var search = require('./routes/search');
 var block = require('./routes/block');
 var uncle = require('./routes/uncle');
-
+var disclaimer = require('./routes/disclaimer');
 var config = new(require('./config.js'))();
 
 
@@ -49,6 +49,7 @@ app.use('/transaction', transaction);
 app.use('/account', account);
 app.use('/accounts', accounts);
 app.use('/search', search);
+app.use('/disclaimer', disclaimer);
 
 app.locals.moment = require('moment');
 app.locals.hashFormatter = new(require('./utils/hashformatter.js'))();
