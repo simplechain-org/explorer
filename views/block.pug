@@ -44,7 +44,15 @@ block content
                 a(href="/block/" + block.parentHash) #{block.parentHash}
         div.form-group.row
             label.col-sm-2.col-form-label Block Reward
-            div.col-sm-10 #{block.totalReward} SIPC (#{block.minerReward} + #{block.foundation} + #{block.txnFees} + #{block.uncleInclusionRewards})
+            div.col-sm-10
+                span #{block.totalReward} SIPC (
+                span(data-toggle="tooltip" data-placement="top" title="Static Block Reward") #{block.minerReward} 
+                span + 
+                span(data-toggle="tooltip" data-placement="top" title="Static Foundation Reward") #{block.foundation}
+                span + 
+                span(data-toggle="tooltip" data-placement="top" title="Txn Fees") #{block.txnFees} 
+                span + 
+                span(data-toggle="tooltip" data-placement="top" title="Uncle Inclusion Rewards") #{block.uncleInclusionRewards})
         div.form-group.row
             label.col-sm-2.col-form-label Uncles Reward
             if block.uncleCount
