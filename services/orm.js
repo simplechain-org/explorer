@@ -31,7 +31,7 @@ let Block = db.define('blocks', {
   },
   hash: {
     type: 'varchar(66)',
-    primaryKey: true
+    unique: 'block_hash'
   },
   logsBloom: {
     type: BLOB
