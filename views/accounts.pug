@@ -23,8 +23,5 @@ block content
               td
                 a(href="/account/" + account.address) #{account.address}
               td #{account.tokenAddress}
-
-              if account.tokenAddress == 'ETH'
-                td #{ethformatter.format(account.value)}
-              else 
-                td #{tokenformatter.format(account.value,account.config.decimals)}  #{account.config.name}
+              td #{ethformatter.format(account.value)}
+     

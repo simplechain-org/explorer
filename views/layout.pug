@@ -51,7 +51,7 @@ html(lang="en")
         $('form').submit(function(){
           var requestStr = $('input',this).val().trim();
           var regexpTx = /[0-9a-zA-Z]{64}?/;
-          var regexpAddr = /^(0x)?[0-9a-f]{40}$/; //New ETH Regular Expression for Addresses
+          var regexpAddr = /^(0x)?[0-9a-f]{40}$/; //New SIPC Regular Expression for Addresses
           var regexpBlock = /^[0-9]+(.[0-9]{1,7})?$/;
 
           if (regexpTx.test(requestStr)){
