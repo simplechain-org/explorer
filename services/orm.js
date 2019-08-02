@@ -8,300 +8,224 @@ const {
   DATE,
   NOW,
   BLOB,
+  MEDIUMINT,
+  SMALLINT,
   BOOLEAN,
-  BIGINT
+  BIGINT,
+  DOUBLE,
 } = sequelize;
 
-let Block = db.define('blocks', {
-  height: {
+
+let Block = db.define('t_blocks', {
+  number: {
     type: INTEGER,
     primaryKey: true
   },
   difficulty: {
-    type: STRING
+    type: 'varbinary(16)'
   },
   extraData: {
-    type: BLOB
+    type: 'binary(32)'
   },
   gasLimit: {
-    type: INTEGER
+    type: MEDIUMINT
   },
   gasUsed: {
-    type: INTEGER
+    type: MEDIUMINT
   },
   hash: {
-    type: 'varchar(66)',
-    unique: 'block_hash'
+    type: 'binary(32)'
   },
   logsBloom: {
-    type: BLOB
+    type: 'varbinary(256)'
   },
   miner: {
-    type: 'varchar(42)'
+    type: 'binary(20)'
   },
   mixHash: {
-    type: 'varchar(66)'
+    type: 'binary(32)'
   },
   nonce: {
-    type: 'varchar(18)'
+    type: 'binary(8)'
   },
   parentHash: {
-    type: 'varchar(66)'
+    type: 'binary(32)'
   },
   receiptsRoot: {
-    type: 'varchar(66)'
+    type: 'binary(32)'
   },
-  totalReward: {
-    type: STRING(22)
+  sha3Uncles: {
+    type: 'binary(32)'
   },
-  uncleReward: {
-    type: STRING(22)
-  },
-  txnFees: {
-    type: STRING(40)
+  unclesCount: {
+    type: SMALLINT
   },
   uncleInclusionRewards: {
-    type: STRING(22)
+    type: DOUBLE
   },
-  uncleCount: {
-    type: INTEGER
+  txnFees: {
+    type: DOUBLE
   },
   minerReward: {
-    type: STRING(22)
+    type: DOUBLE
   },
   foundation: {
-    type: STRING(22)
-  }, 
-  sha3Uncles: {
-    type: 'varchar(66)'
+    type: DOUBLE
   },
   size: {
-    type: INTEGER
+    type: MEDIUMINT
   },
   stateRoot: {
-    type: 'varchar(66)'
+    type: 'binary(32)'
   },
   timestamp: {
     type: INTEGER
   },
   totalDifficulty: {
-    type: STRING
+    type: 'varbinary(22)',
   },
   transactionsRoot: {
-    type: 'varchar(66)'
-  },
-  uncles:{type:STRING(133)}
+    type: 'binary(32)'
+  }
 }, {
   freezeTableName: true,
   timestamps: false
 });
 
-let Transaction = db.define('transactions', {
+let Transaction = db.define('t_transactions', {
   blockHash: {
-    type: 'varchar(66)'
+    type: 'binary(32)',
   },
   blockNumber: {
     type: INTEGER
   },
   hash: {
-    type: 'varchar(66)',
+    type: 'binary(32)',
     primaryKey: true
   },
   from: {
-    type: 'varchar(42)'
+    type: 'binary(20)',
   },
   gas: {
-    type: INTEGER
+    type: MEDIUMINT
   },
   gasUsed: {
-    type: INTEGER
+    type: MEDIUMINT
   },
   gasPrice: {
     type: BIGINT
   },
   input: {
-    type: BLOB
+    type: 'varbinary(50000)'
   },
   nonce: {
-    type: INTEGER
+    type: 'binary(8)'
   },
   to: {
-    type: 'varchar(42)'
+    type: 'binary(20)',
   },
   transactionIndex: {
-    type: INTEGER
+    type: SMALLINT
   },
   value: {
-    type: STRING
+    type: 'varbinary(32)'
   },
   status: {
-    type: BOOLEAN
+    type: 'tinyint(1)'
   }
-}, {
-  freezeTableName: true,
-  timestamps: false
-});
-
-let Uncle = db.define('uncles', {
-  blockNumber: {type: INTEGER},
-  position: {type: INTEGER},
-
-  number: {type: INTEGER},
-  difficulty: {type: BIGINT},
-  extraData: {type: STRING(66)},
-  gasLimit: {type: INTEGER},
-  gasUsed: {type: INTEGER},
-  hash: {type: STRING(66), primaryKey: true},
-  logsBloom: {type: STRING(1024)},
-  miner: {type: STRING(42)},
-  mixHash: {type: STRING(66)},
-  nonce: {type: STRING},
-  parentHash: {type: STRING(66)},
-  receiptsRoot: {type: STRING(66)},
-  sha3Uncles: {type: STRING(66)},
-  size: {type: INTEGER},
-  stateRoot: {type: STRING(66)},
-  timestamp: {type: INTEGER},
-  totalDifficulty: {type: BIGINT},
-  transactionsRoot: {type: STRING(66)},
-  reward: {type: STRING(22)}
 }, {
   freezeTableName: true,
   timestamps: false,
   indexes: [
     {
-      name: 'blockNumber',
-      fields: ['blockNumber', 'position'],
+      fields: ['blockNumber'],
     },
     {
-      name: 'uncleNumber',
-      fields: ['number'],
+      fields: ['from'],
     },
     {
-      fields: ['miner'],
+      fields: ['to'],
     }
   ]
 });
-
-let TokenConfig = db.define('token_configs', {
-  id: {
-    type: INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: STRING(10)
-  },
-  address: {
-    type: STRING(42)
-  },
-  decimals: {
-    type: INTEGER
-  },
-  value: {
-    type: INTEGER
-  }
-}, {
-  freezeTableName: true,
-  timestamps: false
-});
-
-
-let EventLog = db.define('events', {
-  address: {
-    type: 'varchar(42)'
-  },
+//
+let Uncle = db.define('t_uncles', {
   blockNumber: {
     type: INTEGER
   },
-  transactionHash: {
-    type: 'varchar(66)',
+  number: {
+    type: INTEGER
+  },
+  difficulty: {
+    type: 'varbinary(16)'
+  },
+  extraData: {
+    type: 'binary(32)'
+  },
+  gasLimit: {
+    type: MEDIUMINT
+  },
+  gasUsed: {
+    type: MEDIUMINT
+  },
+  hash: {
+    type: 'binary(32)',
     primaryKey: true
   },
-  transactionIndex: {
+  logsBloom: {
+    type: 'varbinary(256)'
+  },
+  miner: {
+    type: 'binary(20)'
+  },
+  mixHash: {
+    type: 'binary(32)'
+  },
+  nonce: {
+    type: 'binary(8)'
+  },
+  parentHash: {
+    type: 'binary(32)'
+  },
+  receiptsRoot: {
+    type: 'binary(32)'
+  },
+  sha3Uncles: {
+    type: 'binary(32)'
+  },
+  size: {
+    type: MEDIUMINT
+  },
+  stateRoot: {
+    type: 'binary(32)'
+  },
+  timestamp: {
     type: INTEGER
   },
-  blockHash: {
-    type: 'varchar(66)'
+  transactionsRoot: {
+    type: 'binary(32)'
   },
-  logIndex: {
-    type: INTEGER
+  uncleIndex: {
+    type: SMALLINT
   },
-  removed: {
-    type: BOOLEAN
-  },
-  event: {
-    type: STRING(20)
-  },
-  id: {
-    type: STRING(20)
-  },
-  from: {
-    type: 'varchar(42)'
-  },
-  to: {
-    type: 'varchar(42)'
-  },
-  value: {
-    type: STRING
-  }
+  reward: {type: DOUBLE}
 }, {
   freezeTableName: true,
   timestamps: false
 });
 
-
-let Account = db.define('accounts', {
-  id: {
-    type: INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  address: {
-    type: STRING(42),
-    unique: "t_balance_uk"
-  },
-  tokenAddress: {
-    type: STRING(42),
-    unique: "t_balance_uk"
-  },
-  value: {
-    type: STRING
-  }
-}, {
-  freezeTableName: true,
-  timestamps: false
-});
 
 async function initTables() {
   await Block.sync({force: false});
   await Transaction.sync({force: false});
   await Uncle.sync({force: false});
-  await TokenConfig.sync({force: false});
-  await EventLog.sync({force: false});
-  await Account.sync({force: false});
-  await TokenConfig.findOrCreate({
-    where: {name: config.baseToken},
-    defaults: {address: config.baseToken, decimals: 18, value: 0}
-  })
-  initTableRelation()
 }
 
-function initTableRelation() {
-  Block.hasMany(Transaction, {foreignKey: 'blockHash', sourceKey: 'hash'});
-  Transaction.belongsTo(Block, {foreignKey: 'blockHash', targetKey: 'hash', as: 'block'});
-  Transaction.belongsTo(EventLog, {foreignKey: 'hash', targetKey: 'transactionHash', as: 'event'});
-  TokenConfig.belongsTo(EventLog, {foreignKey: 'address', targetKey: 'address', as: 'config'});
-  Account.belongsTo(TokenConfig, {foreignKey: 'tokenAddress', targetKey: 'address', as: 'config'});
-}
 
 initTables();
 
 module.exports = {
-  TokenConfig,
   Block,
   Uncle,
   Transaction,
-  EventLog,
-  Account
 };

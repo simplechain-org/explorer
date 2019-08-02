@@ -1,6 +1,8 @@
 function formatter() {
-    this.format = function(diffi) {
-        if (isNaN(diffi)) return diffi;
+    this.format = function(param) {
+        if (isNaN(param)) return param;
+
+        let diffi = param.toString();
 
         if(diffi.length < 5)
             return diffi;

@@ -3,7 +3,7 @@ extends layout
 block content
   form
     fieldset
-        legend information of block #{block.height}
+        legend information of block #{block.number}
         div.form-group.row
             label.col-sm-2.col-form-label Block Hash
             div.col-sm-10 #{block.hash}
@@ -12,7 +12,7 @@ block content
             div.col-sm-10 #{new Date(block.timestamp * 1000).toUTCString()}
         div.form-group.row
             label.col-sm-2.col-form-label Confirmations
-            div.col-sm-10  #{blockNumber == block.height ? 'Unconfirmed' : blockNumber - block.height + " Confirmations"}
+            div.col-sm-10  #{blockNumber == block.number ? 'Unconfirmed' : blockNumber - block.number + " Confirmations"}
         div.form-group.row
             label.col-sm-2.col-form-label Difficulty
             div.col-sm-10  #{diffformatter.format(block.difficulty)}
@@ -55,14 +55,14 @@ block content
                 span(data-toggle="tooltip" data-placement="top" title="Uncle Inclusion Rewards") #{block.uncleInclusionRewards})
         div.form-group.row
             label.col-sm-2.col-form-label Uncles Reward
-            if block.uncleCount
-                div.col-sm-10 #{block.uncleReward} SIPC (#{block.uncleCount} #{block.uncleCount>1?'Uncles':'Uncle'})
+            if block.unclesCount
+                div.col-sm-10 #{block.uncleReward} SIPC (#{block.unclesCount} #{block.unclesCount>1?'Uncles':'Uncle'})
             else 
                 div.col-sm-10 0
-        -for (let i=0; i<block.uncleCount; i++)
+        -for (let i=0; i<block.unclesCount; i++)
             div.form-group.row
                 label.col-sm-2.col-form-label Uncle #{i}
-                a.col-sm-10(href="/uncle/" + block.uncles.split(',')[i]) #{block.uncles.split(',')[i]}
+                a.col-sm-10(href="/uncle/" + block.uncles[i].hash) #{block.uncles[i].hash}
 
 
         div.form-group.row
@@ -71,7 +71,7 @@ block content
         div.form-group.row
             label.col-sm-2.col-form-label Data (Translated)
             pre.col-sm-10 #{new Buffer(block.extraData.toString().slice(2),'hex').toString('utf8')}
-        if block.height == 0
+        if block.number == 0
             div.form-group.row
                 label.col-sm-2.col-form-label Data (Translated Image)
                 div(id='tImage').col-sm-10

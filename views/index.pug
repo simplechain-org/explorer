@@ -4,7 +4,6 @@ block content
   .row
     .col-md-12
       //- h2 #{config.tokenName}
-      //p Welcome to the #{config.tokenShortName} Explorer powered by XCash!
 
   .row
     .col-md-12
@@ -25,8 +24,8 @@ block content
           for block in blocks
             tr
               td
-                a(href="/block/" + block.height) #{block.height}
-              td #{block.uncleCount}
+                a(href="/block/" + block.number) #{block.number}
+              td #{block.unclesCount}
               td #{diffformatter.format(block.difficulty)}
               td #{block.miner}
               td #{sizeformatter.format(block.size)}

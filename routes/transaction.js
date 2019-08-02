@@ -1,42 +1,32 @@
 var express = require('express');
 var router = express.Router();
-var {Block,Transaction,EventLog,TokenConfig} =  require("../services/orm");
 var web3 = require('../lib/web3');
+const db = require('../lib/db')
+const Sequelize = require("sequelize");
 
-router.get('/:hash', function(req, res, next) {
-  
-  return Transaction.findOne({
-    include:[
-      {
-        model:Block,
-        as: 'block'
-      },{
-        model:EventLog,
-        as: 'event'
-      }
-    ],
-		where:{
-      hash:req.params.hash
-		}
-	}).then(async (data)=>{
-    var blockNumber = await web3.eth.getBlockNumber();
-    var tokenConfig;
-    if (data.event){
-      tokenConfig = await TokenConfig.findOne({
-        where:{
-          address:String(data.event.address)
-        }
-      });
-    }
-    
-    // 更新收据操作已经移到 listenReceipt.js
-    // if (data.status === null || data.status === undefined){
-    //   var receipt = await web3.eth.getTransactionReceipt(String(data.hash));
-    //   data.status = receipt.status;
-    //   data.save();
-    // }
-    res.render('transaction', { transaction: data,blockNumber:blockNumber,tokenConfig:tokenConfig });
-  });
+router.get('/:hash', async function(req, res, next) {
+
+  let blockNumber = await web3.eth.getBlockNumber();
+
+  let transactions = await db.query(`
+            select * from transactions where cast(hash as CHAR)=?
+        `, {
+    replacements: [req.params.hash],
+    type: Sequelize.QueryTypes.SELECT
+  })
+
+  let transaction = transactions[0];
+
+  let blocks = await db.query(`
+            select * from blocks where number=? 
+        `, {
+    replacements: [transaction.blockNumber],
+    type: Sequelize.QueryTypes.SELECT
+  })
+
+  transaction.block = blocks[0];
+
+  res.render('transaction', { transaction:transaction ,blockNumber:blockNumber});
 });
 
 module.exports = router;

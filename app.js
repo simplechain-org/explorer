@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var account = require('./routes/account');
-var accounts = require('./routes/accounts');
 var transaction = require('./routes/transaction');
 var search = require('./routes/search');
 var block = require('./routes/block');
@@ -16,14 +15,11 @@ var disclaimer = require('./routes/disclaimer');
 var config = new(require('./config.js'))();
 
 
-var exporterTokenService = require('./services/exporter_tokens.js');
-new exporterTokenService();
+var exporterService = require('./services/syncBlock.js');
+exporterService();
 
-var exporterService = require('./services/exporter.js');
-new exporterService();
-
-var listenReceipt = require('./services/listenReceipt.js');
-new listenReceipt();
+var listenReceipt = require('./services/syncReceipt.js');
+listenReceipt();
 
 var app = express();
 
@@ -47,7 +43,6 @@ app.use('/uncle', uncle);
 app.use('/transaction', transaction);
 
 app.use('/account', account);
-app.use('/accounts', accounts);
 app.use('/search', search);
 app.use('/disclaimer', disclaimer);
 

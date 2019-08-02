@@ -4,7 +4,7 @@ const config = new(require('../config.js'))();
 function formatter() {
   this.format = function(txt) {
     if (isNaN(txt)) return txt;
-    var w = web3.utils.fromWei(txt, "ether");
+    var w = web3.utils.fromWei(txt.toString(), "ether");
     return `${w} ${config.baseToken}`
   }
 }
