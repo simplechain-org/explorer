@@ -5,7 +5,6 @@ const config = new (require('../config.js'))();
 const {listenBlockTransactions} = require('./syncData')
 const blockReward = require('../utils/blockReward');
 const PERCENT_OF_FOUNDATION = 0.05;
-const global_str = require('./global')
 
 let listenBlock = async (blockNumber) => {
 
@@ -38,12 +37,10 @@ let listenBlock = async (blockNumber) => {
         let txnFees = blockReward.getGasInBlock(result.transactions);
         let unclesCount = result.uncles.length;
         let uncleInclusionRewards = blockReward.getRewardForUncle(result.number, unclesCount);
-        let miner = result.miner.replace(global_str.CCC_PREV_STR,global_str.ETH_PREV_STR);
-
 
         db.query(`replace into t_blocks set number=${result.number},difficulty=${result.difficulty},
             extraData=${result.extraData},gasLimit=${result.gasLimit},gasUsed=${result.gasUsed},
-            hash=${result.hash},logsBloom=${result.logsBloom},miner=${miner},mixHash=${result.mixHash},
+            hash=${result.hash},logsBloom=${result.logsBloom},miner=${result.miner},mixHash=${result.mixHash},
             nonce=${result.nonce},parentHash=${result.parentHash},receiptsRoot=${result.receiptsRoot},
             sha3Uncles=${result.sha3Uncles},unclesCount=${unclesCount},uncleInclusionRewards=${uncleInclusionRewards},
             minerReward=${minerReward},foundation=${foundation},txnFees=${txnFees},size=${result.size},stateRoot=${result.stateRoot},
@@ -67,11 +64,10 @@ let listenBlock = async (blockNumber) => {
                         }
 
                         let uncleReward = blockReward.getUncleReward(uncle.number, blockNumber, reward);
-                        let miner = uncle.miner.replace(global_str.CCC_PREV_STR,global_str.ETH_PREV_STR);
 
                         db.query(`replace into t_uncles set blockNumber=${blockNumber},number=${uncle.number},difficulty=${uncle.difficulty},
                             extraData=${uncle.extraData},gasLimit=${uncle.gasLimit},gasUsed=${uncle.gasUsed},
-                            hash=${uncle.hash},logsBloom=${uncle.logsBloom},miner=${miner},mixHash=${uncle.mixHash},
+                            hash=${uncle.hash},logsBloom=${uncle.logsBloom},miner=${uncle.miner},mixHash=${uncle.mixHash},
                             nonce=${uncle.nonce},parentHash=${uncle.parentHash},receiptsRoot=${uncle.receiptsRoot},
                             sha3Uncles=${uncle.sha3Uncles},size=${uncle.size},stateRoot=${uncle.stateRoot},
                             timestamp=${uncle.timestamp},transactionsRoot=${uncle.transactionsRoot},
