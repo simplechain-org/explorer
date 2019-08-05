@@ -1,6 +1,7 @@
 const web3 = require('../lib/web3');
 const db = require('../lib/db');
 const Sequelize = require("sequelize");
+const global_str = require('./global')
 
 function listenBlockTransactions(blockNumber) {
 
@@ -23,9 +24,13 @@ function listenBlockTransactions(blockNumber) {
                     transaction.input = '0x0'
                 }
 
-                sql += `(${transaction.blockHash},'${transaction.blockNumber}',${transaction.from},'${transaction.gas}',
+                let from = transaction.from.replace(global_str.CCC_PREV_STR,global_str.ETH_PREV_STR);
+                let to = transaction.to.replace(global_str.CCC_PREV_STR,global_str.ETH_PREV_STR);
+
+
+                sql += `(${transaction.blockHash},'${transaction.blockNumber}',${from},'${transaction.gas}'
                         '${transaction.gasPrice}',${transaction.hash},${transaction.input},${transaction.nonce},
-                        ${transaction.to},'${transaction.transactionIndex}','${transaction.value}')`;
+                        ${to},'${transaction.transactionIndex}','${transaction.value}')`;
                 if (i != result.transactions.length-1){
                     sql += ",";
                 }
