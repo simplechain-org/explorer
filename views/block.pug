@@ -106,7 +106,7 @@ block content
                 div.form-group.row
                     label.col-sm-2.col-form-label Value
                     div.col-sm-10 #{ethformatter.format(transaction.value)}
-    if block.height == 0
+    if block.number == 0
       script.
         $(function(){
             var re = /(?=[^:;]*;)([^:;]+)|([^;,]+)$/g;

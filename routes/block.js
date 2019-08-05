@@ -17,6 +17,9 @@ router.get('/:block', async (req, res, next) => {
   })
 
   let block = blocks[0];
+  if (param == 0){
+    block = await web3.eth.getBlock(0, false);
+  }
 
   let transactions = await db.query(`
             select * from transactions where blockNumber=?
@@ -32,6 +35,8 @@ router.get('/:block', async (req, res, next) => {
     replacements: [block.number],
     type: Sequelize.QueryTypes.SELECT
   })
+
+
 
 
   let blockReward = 0;
