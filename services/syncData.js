@@ -23,6 +23,10 @@ function listenBlockTransactions(blockNumber) {
                     transaction.input = '0x0'
                 }
 
+                if (transaction.to === null || transaction.to === undefined){
+                    transaction.to = '0x0';
+                }
+
                 sql += `(${transaction.blockHash},'${transaction.blockNumber}',${transaction.from},'${transaction.gas}',
                         '${transaction.gasPrice}',${transaction.hash},${transaction.input},${transaction.nonce},
                         ${transaction.to},'${transaction.transactionIndex}','${transaction.value}')`;
