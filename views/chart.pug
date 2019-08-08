@@ -1,0 +1,116 @@
+extends layout
+
+block content
+  div(id='containerchart' style="margin-top: 50px")
+
+block scripts
+  script(src="http://cdn.hcharts.cn/highcharts/highcharts.js")
+  script(src="http://cdn.hcharts.cn/highcharts/modules/exporting.js")
+  
+  script.
+    function formatData (diffi) {
+      if (isNaN(diffi)) {
+        return diffi;
+      }
+      diffi = diffi.toString()
+      if(diffi.length < 5)
+          return diffi;
+      if(diffi.length < 7)
+          return (diffi/10**3).toFixed(3) + " K";
+      if(diffi.length < 10)
+          return (diffi/10**6).toFixed(3) + " M";
+      if(diffi.length < 13)
+          return (diffi/10**9).toFixed(3) + " G";
+      if(diffi.length < 16)
+          return (diffi/10**12).toFixed(3) + " T";
+    }
+    let data = '#{data}'
+    data = data.replace(/difficulty/g, 'y')
+    data = JSON.parse(data.replace(/&quot;/g, '"'))
+    
+    Highcharts.setOptions({
+      lang: {
+        numericSymbols: [" k", " M", " G", " T", " P", " E"]
+      }
+    });
+    $('#containerchart').highcharts({
+      chart: {
+        zoomType: 'x',
+        resetZoomButton: {
+            position: {
+                align: 'right', // right by default
+                verticalAlign: 'top',
+                x: -55,
+                y: 10
+            },
+            relativeTo: 'chart'
+        }
+      },
+      title: {
+        text: ' SIPC Difficulty Chart '
+      },
+      subtitle: {
+        text: document.ontouchstart === undefined ?
+            'Source: explorer.simplechain.com<br>Click and drag in the plot area to zoom in' :
+            'Pinch the chart to zoom in'
+      }, 
+      xAxis: {
+        type:'datetime',
+        minRange: 14 * 24 * 3600000
+      },
+      yAxis: {
+        title: {
+          text: 'Difficulty Per Day '
+        },
+        min: 0                       
+      },
+      legend: {
+        enabled: false
+      },
+      plotOptions: {
+        area: {
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, Highcharts.getOptions().colors[0]],
+                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+            ]
+          },
+          marker: {
+            radius: 2
+          },
+          lineWidth: 1,
+          states: {
+            hover: {
+              lineWidth: 1
+            }
+          },
+          threshold: null
+        }
+      },
+      credits: {
+        enabled: false
+      }, 
+      tooltip: {
+        formatter: function () {
+          return '<span style="font-size:10px">' + this.point.date + '</span><br><table><tr><td style="padding:0">' +
+            '[ <span style="color:' + this.series.color + '">Avg Difficulty : </a></span><b>' + formatData(this.point.y) + '</b> ]<br>' +' ' + ' <br>' + 
+            'Avg Hash Rate: <b>' + formatData(this.point.avgHashrate) + '</b><br>' + 
+            'Avg Block Time: <b>' + this.point.avgTime + 's' + '</b><br>' + 
+            'Avg Block Size: <b>' + Number(this.point.size).toLocaleString() + '</b><br>' + 
+            'Total Block Count: <b>' + this.point.blockCount.toLocaleString() + '</b><br>' +  
+            'Total Uncles Count: <b>' + this.point.uncleCount.toLocaleString() + '</b><br>' +
+            'Total Tx Count: <b>' + Number(this.point.txCount).toLocaleString() + '</b><br>' +  
+            'New Address Seen: <b>' + this.point.newAddress.toLocaleString() + '</b><br>' + '</td></tr></table>';
+        }
+      },
+      series: [{
+        type: 'line',
+        turboThreshold: 7000,
+        name: 'Daily Transaction Count',
+        pointInterval: 24 * 3600 * 1000,
+        pointStart: Date.UTC(2019, 0, 4),
+        data: data
+      }]
+    })
+
