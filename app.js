@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var chart = require('./routes/chart');
 
 var index = require('./routes/index');
 var account = require('./routes/account');
@@ -20,6 +21,9 @@ exporterService();
 
 var listenReceipt = require('./services/syncReceipt.js');
 listenReceipt();
+
+var chartData = require('./services/chartData.js');
+new chartData();
 
 var app = express();
 
@@ -41,6 +45,7 @@ app.use('/', index);
 app.use('/block', block);
 app.use('/uncle', uncle);
 app.use('/transaction', transaction);
+app.use('/chart', chart);
 
 app.use('/account', account);
 app.use('/search', search);
