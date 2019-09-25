@@ -57,4 +57,15 @@ router.get('/:block', async (req, res, next) => {
 
 });
 
+
+router.get('/', async function(req, res, next) {
+
+  let blockNumber = await web3.eth.getBlockNumber();
+  let block = await web3.eth.getBlock(blockNumber, false);
+
+  // res.
+  res.jsonp(block);
+});
+
+
 module.exports = router;
