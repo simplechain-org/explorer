@@ -15,8 +15,8 @@ var disclaimer = require('./routes/disclaimer');
 var config = new(require('./config.js'))();
 
 
-var exporterService = require('./services/syncBlock.js');
-exporterService();
+// var exporterService = require('./services/syncBlock.js');
+// exporterService();
 
 var listenReceipt = require('./services/syncReceipt.js');
 listenReceipt();
