@@ -5,7 +5,7 @@ const config = new (require('../config.js'))();
 const {sendMessage} = require("../mq/sender");
 
 let syncReceipt = () => {
-    db.query("select cast(hash as char) hash,blockNumber,`from`,`to`,cast(`value` as char) value from transactions where gasUsed is NULL order by blockNumber limit 10",{
+    db.query("select cast(hash as char) hash,blockNumber,`from`,`to`,cast(`value` as char) value from transactions where gasUsed is NULL order by blockNumber limit 200",{
         replacements: [],
         type: Sequelize.QueryTypes.SELECT
     }).then(result => {
