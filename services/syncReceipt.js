@@ -14,7 +14,7 @@ let syncReceipt = () => {
             let data = result[i];
 
             web3.eth.getTransactionReceipt(String(data.hash)).then(receipt => {
-                db.query(`update t_transactions set gasUsed=${receipt.gasUsed},status=${receipt.status} where cast(hash as char)=${receipt.transactionHash}`,{
+                db.query(`update t_transactions set gasUsed=${receipt.gasUsed},status=${receipt.status} where hash=${receipt.transactionHash}`,{
                     replacements: [],
                     type: Sequelize.QueryTypes.UPDATE
                 }).then((r) => {
