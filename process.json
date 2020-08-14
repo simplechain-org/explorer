@@ -1,0 +1,9 @@
+{
+  "apps":[{
+    "name": "explorer",
+    "script": "npm run start",
+    "env":{
+      "PORT": 3001
+    }
+  }]
+}
