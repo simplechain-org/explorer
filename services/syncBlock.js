@@ -106,4 +106,19 @@ let syncBlocks = () =>{
   })
 }
 
+process.on('message', async (msg) => {
+    try{
+        await web3.eth.net.isListening()
+        syncBlocks();
+    }catch(e) {
+        process.send(false);
+        process.exit()
+    }
+});
+
+process.on('unhandledRejection', function (e) {
+    /*处理异常*/
+    process.send(false);
+    process.exit()
+});
 module.exports = syncBlocks

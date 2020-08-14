@@ -6,10 +6,10 @@ var config = function () {
   this.reconnect = 1000;
 
   this.mysql = {
-    database : '',
-    user : '',
-    password : '',
-    host : ''
+    database : 'explorer',
+    user : 'root',
+    password : 'admin123',
+    host : 'localhost'
   };
 
   this.baseToken = 'SIPC';

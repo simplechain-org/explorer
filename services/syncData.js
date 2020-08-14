@@ -16,7 +16,7 @@ function listenBlockTransactions(blockNumber) {
             for(let i = 0 ; i < result.transactions.length ; i++){
                 let transaction = result.transactions[i];
                 if (transaction.input === '0x') {
-                    transaction.input = ''
+                    transaction.input = '0x0'
                 }
 
                 if (transaction.input.length > 50000) {
@@ -40,7 +40,7 @@ function listenBlockTransactions(blockNumber) {
                 replacements: [],
                 type: Sequelize.QueryTypes.INSERT
             }).catch(e => {
-                console.log(e);
+                console.log(455, e);
                 throw e;
             })
         }
