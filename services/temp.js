@@ -4,7 +4,7 @@ const Sequelize = require("sequelize");
 const config = new (require('../config.js'))();
 const {listenBlockTransactions} = require('./syncData')
 const blockReward = require('../utils/blockReward');
-//const PERCENT_OF_FOUNDATION = 0.05;
+const PERCENT_OF_FOUNDATION = 0.05;
 
 let listenBlock = async (blockNumber) => {
 
@@ -17,7 +17,7 @@ let listenBlock = async (blockNumber) => {
 
     if (blockNumber > currentHeight){
         setTimeout(async () => {
-            await listenBlock(blockNumber);
+            await listenBlock(blockNumber-20);
         },config.refreshingTime);
         return false;
     }
@@ -32,8 +32,8 @@ let listenBlock = async (blockNumber) => {
         }
 
         let reward = blockReward.getConstReward(result.number)
-        let minerReward = reward * (1 - blockReward.getFoundationPercent(result.number));
-        let foundation = reward * blockReward.getFoundationPercent(result.number);
+        let minerReward = reward * (1 - PERCENT_OF_FOUNDATION);
+        let foundation = reward * PERCENT_OF_FOUNDATION;
         let txnFees = blockReward.getGasInBlock(result.transactions);
         let unclesCount = result.uncles.length;
         let uncleInclusionRewards = blockReward.getRewardForUncle(result.number, unclesCount);
@@ -86,8 +86,6 @@ let listenBlock = async (blockNumber) => {
                 console.log('getBlockUncleCount error:', blockNumber)
             })
         }
-
-        listenBlockTransactions(blockNumber);
         await listenBlock(blockNumber+1);
 
     }).catch(e => {
@@ -95,30 +93,5 @@ let listenBlock = async (blockNumber) => {
     })
 }
 
-let syncBlocks = () =>{
-  db.query(`select COALESCE(max(number),0) blockNumber from t_blocks`,{
-      replacements: [],
-      type: Sequelize.QueryTypes.SELECT
-  }).then(async result => {
-    let number = result[0].blockNumber;
-    console.log('start block:',number);
-    await listenBlock(number);
-  })
-}
+listenBlock(1992838);
 
-process.on('message', async (msg) => {
-    try{
-        await web3.eth.net.isListening()
-        syncBlocks();
-    }catch(e) {
-        process.send(false);
-        process.exit()
-    }
-});
-
-process.on('unhandledRejection', function (e) {
-    /*处理异常*/
-    process.send(false);
-    process.exit()
-});
-module.exports = syncBlocks

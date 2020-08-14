@@ -7,6 +7,14 @@ function getConstReward(height) {
     return 20 * Math.pow((1 / 2), n - 1)
 }
 
+
+function getFoundationPercent(height){
+    const year = 2500000
+    let n = Math.ceil((height + 1) / year)
+
+    return (0.05 * Math.pow((1 / 2), n - 1));
+}
+
 // 包含叔块的奖励,最多两个叔块
 function getRewardForUncle(height, uncleNumber) {
     let reward = getConstReward(height);
@@ -39,5 +47,6 @@ module.exports = {
     getUncleReward,
     getGasInBlock,
     getConstReward,
-    getRewardForUncle
+    getRewardForUncle,
+    getFoundationPercent
 }
