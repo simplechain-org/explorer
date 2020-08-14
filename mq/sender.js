@@ -4,12 +4,13 @@ const config = new(require('../config.js'))();
 let sendMessage = async function(q,m){
     if (config.mq.enable){
 
-        const open = amqp.connect(config.mq.server);
+       // const open = amqp.connect(config.mq.server);
+	const open = global.mq || (global.mq = amqp.connect(config.mq.server));
 
         open.then(function(conn){
             return conn.createChannel();
         }).then(function(ch){
-            return ch.assertQueue(q, {durable: false}).then(function(ok) {
+            return ch.assertQueue(q, {auto_delete:true,durable: false}).then(function(ok) {
                 return ch.sendToQueue(q, new Buffer(m));
             });
         }).catch(console.warn);
