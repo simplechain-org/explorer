@@ -1,4 +1,5 @@
 let web3 = require('../lib/web3');
+const BN = require('bn.js');
 
 // 获取普通区块奖励。 从0开始，每250万个区块后减半。
 function getConstReward(height) {
@@ -32,13 +33,12 @@ function getGasInBlock(transactions) {
     let length = transactions.length
     if (length === 0) {
         return 0
-    } 
+    }
     let txsFee = 0;
     for (let i = 0; i < length; i++) {
-        fee = (transactions[i].gas) * (transactions[i].gasPrice);
-        fee = isNaN(fee)? 0 : fee
-        fee = web3.utils.fromWei(String(fee));
-        txsFee += parseFloat(fee);
+        const bigFee = (new BN(transactions[i].gas)).mul(new BN(transactions[i].gasPrice))
+        const fee = web3.utils.fromWei(bigFee)
+        txsFee += parseFloat(fee)
     }
     return txsFee
 }
