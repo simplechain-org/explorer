@@ -50,7 +50,7 @@ let listenBlock = async (blockNumber) => {
             replacements: [],
             type: Sequelize.QueryTypes.INSERT
         }).catch(e => {
-            console.log("save block error:",blockNumber)
+            console.log("save block error:",blockNumber,e)
         })
 
 
@@ -77,7 +77,7 @@ let listenBlock = async (blockNumber) => {
                             replacements: [],
                             type: Sequelize.QueryTypes.INSERT
                         }).catch(e => {
-                            console.log("save uncle error:",e.hash)
+                            console.log("save uncle error:",e)
                         })
                     })
                 }

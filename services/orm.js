@@ -28,10 +28,10 @@ let Block = db.define('t_blocks', {
     type: 'binary(32)'
   },
   gasLimit: {
-    type: MEDIUMINT
+    type: BIGINT
   },
   gasUsed: {
-    type: MEDIUMINT
+    type: BIGINT
   },
   hash: {
     type: 'binary(32)'
@@ -163,10 +163,10 @@ let Uncle = db.define('t_uncles', {
     type: 'binary(32)'
   },
   gasLimit: {
-    type: MEDIUMINT
+    type: BIGINT
   },
   gasUsed: {
-    type: MEDIUMINT
+    type: BIGINT
   },
   hash: {
     type: 'binary(32)',

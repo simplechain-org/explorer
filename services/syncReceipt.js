@@ -27,7 +27,7 @@ let syncReceipt = () => {
                         sendMessage(config.mq.key,JSON.stringify(data));
                     }
                 }).catch(e => {
-                    console.log(e)
+                    console.log("receipt error",e)
                 })
             })
         }

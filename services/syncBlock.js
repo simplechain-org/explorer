@@ -41,7 +41,7 @@ let listenBlock = async (blockNumber) => {
 
         db.query(`replace into t_blocks set number=${result.number},difficulty=${result.difficulty},
             extraData=${result.extraData},gasLimit=${result.gasLimit},gasUsed=${result.gasUsed},
-            hash=${result.hash},logsBloom=${result.logsBloom},miner=${result.miner},mixHash=${result.mixHash},
+            hash=${result.hash},logsBloom=${result.logsBloom},miner=${result.miner.toLowerCase().replace(/si/,'0x')},mixHash=${result.mixHash},
             nonce=${result.nonce},parentHash=${result.parentHash},receiptsRoot=${result.receiptsRoot},
             sha3Uncles=${result.sha3Uncles},unclesCount=${unclesCount},uncleInclusionRewards=${uncleInclusionRewards},
             minerReward=${minerReward},foundation=${foundation},txnFees=${txnFees},size=${result.size},stateRoot=${result.stateRoot},
@@ -50,7 +50,7 @@ let listenBlock = async (blockNumber) => {
             replacements: [],
             type: Sequelize.QueryTypes.INSERT
         }).catch(e => {
-            console.log("save block error:",blockNumber)
+            console.log("save block error:",blockNumber, e)
         })
 
 
@@ -68,7 +68,7 @@ let listenBlock = async (blockNumber) => {
 
                         db.query(`replace into t_uncles set blockNumber=${blockNumber},number=${uncle.number},difficulty=${uncle.difficulty},
                             extraData=${uncle.extraData},gasLimit=${uncle.gasLimit},gasUsed=${uncle.gasUsed},
-                            hash=${uncle.hash},logsBloom=${uncle.logsBloom},miner=${uncle.miner},mixHash=${uncle.mixHash},
+                            hash=${uncle.hash},logsBloom=${uncle.logsBloom},miner=${uncle.miner.toLowerCase().replace(/si/,'0x')},mixHash=${uncle.mixHash},
                             nonce=${uncle.nonce},parentHash=${uncle.parentHash},receiptsRoot=${uncle.receiptsRoot},
                             sha3Uncles=${uncle.sha3Uncles},size=${uncle.size},stateRoot=${uncle.stateRoot},
                             timestamp=${uncle.timestamp},transactionsRoot=${uncle.transactionsRoot},
@@ -77,13 +77,13 @@ let listenBlock = async (blockNumber) => {
                             replacements: [],
                             type: Sequelize.QueryTypes.INSERT
                         }).catch(e => {
-                            console.log("save uncle error:",e.hash)
+                            console.log("save uncle error:",e)
                         })
                     })
                 }
 
             }).catch(e => {
-                console.log('getBlockUncleCount error:', blockNumber)
+                console.log('getBlockUncleCount error:', blockNumber, e)
             })
         }
 
@@ -100,6 +100,7 @@ let syncBlocks = () =>{
       replacements: [],
       type: Sequelize.QueryTypes.SELECT
   }).then(async result => {
+      console.log(546656, result)
     let number = result[0].blockNumber;
     console.log('start block:',number);
     await listenBlock(number);

@@ -27,9 +27,9 @@ function listenBlockTransactions(blockNumber) {
                     transaction.to = '0x0';
                 }
 
-                sql += `(${transaction.blockHash},'${transaction.blockNumber}',${transaction.from},'${transaction.gas}',
+                sql += `(${transaction.blockHash},'${transaction.blockNumber}',${transaction.from.toLowerCase().replace(/si/,'0x')},'${transaction.gas}',
                         '${transaction.gasPrice}',${transaction.hash},${transaction.input},${transaction.nonce},
-                        ${transaction.to},'${transaction.transactionIndex}','${transaction.value}')`;
+                        ${transaction.to.toLowerCase().replace(/si/,'0x')},'${transaction.transactionIndex}','${transaction.value}')`;
                 if (i != result.transactions.length-1){
                     sql += ",";
                 }
