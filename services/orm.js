@@ -216,16 +216,14 @@ let Uncle = db.define('t_uncles', {
 
 
 async function initTables() {
-  await Block.sync({force: false});
-  await Transaction.sync({force: false});
-  await Uncle.sync({force: false});
+  await Block.sync({force: true});
+  await Transaction.sync({force: true});
+  await Uncle.sync({force: true});
 }
-
-
-initTables();
 
 module.exports = {
   Block,
   Uncle,
   Transaction,
+  initTables
 };
